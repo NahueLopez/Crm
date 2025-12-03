@@ -560,11 +560,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Application\\CRMF360.Application.csproj",
+      "projectUniqueName": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Application\\CRMF360.Application.csproj",
       "projectName": "CRMF360.Application",
-      "projectPath": "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Application\\CRMF360.Application.csproj",
+      "projectPath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Application\\CRMF360.Application.csproj",
       "packagesPath": "C:\\Users\\Nahue\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Application\\obj\\",
+      "outputPath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -585,8 +585,8 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Domain\\CRMF360.Domain.csproj": {
-              "projectPath": "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Domain\\CRMF360.Domain.csproj"
+            "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Domain\\CRMF360.Domain.csproj": {
+              "projectPath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Domain\\CRMF360.Domain.csproj"
             }
           }
         }

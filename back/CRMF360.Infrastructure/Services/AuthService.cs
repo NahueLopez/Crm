@@ -7,15 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace CRMF360.Infrastructure.Services;
 
-public interface IAuthService
-{
-    Task<LoginResponseDto?> LoginAsync(LoginRequestDto request);
-}
-
-public class AuthService : IAuthService
+public class AuthService : IAuthService   // 👈 IMPLEMENTA la interfaz de Application
 {
     private readonly ApplicationDbContext _context;
     private readonly IConfiguration _configuration;
@@ -28,7 +24,6 @@ public class AuthService : IAuthService
 
     public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto request)
     {
-        // Buscamos por Email (podrías usar Username si querés)
         var user = await _context.Users
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
@@ -36,12 +31,11 @@ public class AuthService : IAuthService
                 u.Email == request.Email &&
                 u.Active);
 
-        if (user == null)
+        if (user is null)
             return null;
 
-        // ⚠️ Acá asumimos que usás BCrypt para los hashes
-        // NuGet: BCrypt.Net-Next
-        bool passwordOk = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+        // Verificar password
+        bool passwordOk = BCryptNet.Verify(request.Password, user.PasswordHash);
         if (!passwordOk)
             return null;
 
@@ -62,7 +56,6 @@ public class AuthService : IAuthService
 
     private string GenerateJwtToken(User user)
     {
-        // ⚙️ Leemos los valores desde appsettings.json
         var jwtKey = _configuration["Jwt:Key"]
             ?? throw new InvalidOperationException("Jwt:Key not configured");
         var jwtIssuer = _configuration["Jwt:Issuer"] ?? "CRMF360";
@@ -80,13 +73,10 @@ public class AuthService : IAuthService
             new Claim("id", user.Id.ToString())
         };
 
-        // Roles (opcional si ya tenés la tabla Role)
         foreach (var ur in user.UserRoles)
         {
             if (ur.Role != null)
-            {
                 claims.Add(new Claim(ClaimTypes.Role, ur.Role.Name));
-            }
         }
 
         var token = new JwtSecurityToken(

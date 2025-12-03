@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kkCBuiJPaZo=",
+  "dgSpecHash": "iTjxcuvX+Xk=",
   "success": true,
-  "projectFilePath": "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Application\\CRMF360.Application.csproj",
+  "projectFilePath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Application\\CRMF360.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nahue\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.11\\microsoft.entityframeworkcore.9.0.11.nupkg.sha512",
     "C:\\Users\\Nahue\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.11\\microsoft.entityframeworkcore.abstractions.9.0.11.nupkg.sha512",

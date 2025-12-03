@@ -2,6 +2,7 @@
 using CRMF360.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using BCryptNet = BCrypt.Net.BCrypt;  
 
 namespace CRMF360.Infrastructure.Seed;
 
@@ -12,10 +13,8 @@ public static class DataSeeder
         using var scope = services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        // 🧱 Aplica migraciones pendientes (crea la DB/tablas si no existen)
         await context.Database.MigrateAsync();
 
-        // 1) Roles base
         if (!await context.Roles.AnyAsync())
         {
             var adminRole = new Role { Name = "Admin" };
@@ -25,7 +24,6 @@ public static class DataSeeder
             await context.SaveChangesAsync();
         }
 
-        // 2) Usuario admin
         var adminEmail = "admin@crm-f360.test";
 
         if (!await context.Users.AnyAsync(u => u.Email == adminEmail))
@@ -36,16 +34,14 @@ public static class DataSeeder
                 Email = adminEmail,
                 Phone = null,
                 Active = true,
-                // ⚠️ Solo para desarrollo: en texto plano.
-                // Después lo cambiamos por un hash real (BCrypt, etc).
-                PasswordHash = "Admin123!",
+
+                PasswordHash = BCryptNet.HashPassword("Admin123!"),
                 CreatedAt = DateTime.UtcNow
             };
 
             context.Users.Add(adminUser);
             await context.SaveChangesAsync();
 
-            // 3) Vincularlo al rol Admin
             var adminRole = await context.Roles.FirstAsync(r => r.Name == "Admin");
 
             var userRole = new UserRole

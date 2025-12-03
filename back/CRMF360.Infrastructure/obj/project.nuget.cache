@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CdyQNm4iLCk=",
+  "dgSpecHash": "3MJC23N/j3I=",
   "success": true,
-  "projectFilePath": "c:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Infrastructure\\CRMF360.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Infrastructure\\CRMF360.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nahue\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Nahue\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.11\\microsoft.entityframeworkcore.9.0.11.nupkg.sha512",

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CRMF360.Application.Auth
+﻿namespace CRMF360.Application.Auth
 {
     public class LoginResponseDto
     {

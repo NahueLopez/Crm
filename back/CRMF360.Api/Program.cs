@@ -1,6 +1,5 @@
 ﻿using CRMF360.Infrastructure;
 using CRMF360.Infrastructure.Seed;
-using CRMF360.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -9,14 +8,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
 builder.Services.AddControllers();
 
-// AuthService DI
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-// JWT
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "clave-super-secreta-dev";
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "clave-super-secreta-dev-mas-larga-que-32chars";
 var key = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services
@@ -35,11 +29,42 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
-// Swagger (si querés agregar auth después le metemos el esquema de bearer)
+// 🧾 Swagger + Auth
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRMF360 API", Version = "v1" });
+
+    // 🔑 Definición del esquema de seguridad Bearer
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Description = "Ingrese: **Bearer {token}**",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    };
+
+    c.AddSecurityDefinition("Bearer", securityScheme);
+
+    // 📌 Requerir el esquema en todos los endpoints (o la mayoría)
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    };
+
+    c.AddSecurityRequirement(securityRequirement);
 });
 
 var app = builder.Build();

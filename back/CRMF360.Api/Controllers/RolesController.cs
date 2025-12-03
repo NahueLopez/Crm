@@ -6,7 +6,7 @@ namespace CRMF360.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // 👈 Si querés que todo esté protegido
+[Authorize]
 public class RolesController : ControllerBase
 {
     private readonly IRoleService _roleService;
@@ -16,7 +16,6 @@ public class RolesController : ControllerBase
         _roleService = roleService;
     }
 
-    // GET: api/roles
     [HttpGet]
     public async Task<ActionResult<List<RoleDto>>> GetAll(CancellationToken cancellationToken)
     {
@@ -24,7 +23,6 @@ public class RolesController : ControllerBase
         return Ok(roles);
     }
 
-    // GET: api/roles/5
     [HttpGet("{id:int}")]
     public async Task<ActionResult<RoleDto>> GetById(int id, CancellationToken cancellationToken)
     {
@@ -34,7 +32,6 @@ public class RolesController : ControllerBase
         return Ok(role);
     }
 
-    // POST: api/roles
     [HttpPost]
     public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleDto dto, CancellationToken cancellationToken)
     {
@@ -42,7 +39,6 @@ public class RolesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
     }
 
-    // PUT: api/roles/5
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateRoleDto dto, CancellationToken cancellationToken)
     {
@@ -52,7 +48,6 @@ public class RolesController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/roles/5
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {

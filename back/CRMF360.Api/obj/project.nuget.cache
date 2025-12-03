@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "b9Zjg8QE2t0=",
+  "dgSpecHash": "kMKT9S9/LSY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\CRMF360.Api\\CRMF360.Api.csproj",
+  "projectFilePath": "C:\\Users\\Nahue\\Desktop\\Code\\Crm-F360\\back\\CRMF360.Api\\CRMF360.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nahue\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Nahue\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

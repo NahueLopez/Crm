@@ -1,4 +1,9 @@
 ﻿using CRMF360.Application.Abstractions;
+using CRMF360.Application.Auth;
+using CRMF360.Application.Empresas;
+using CRMF360.Application.PersonaEmpresa;
+using CRMF360.Application.Proyectos;
+using CRMF360.Application.Roles;
 using CRMF360.Application.Users;
 using CRMF360.Infrastructure.Persistence;
 using CRMF360.Infrastructure.Services;
@@ -6,26 +11,37 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CRMF360.Infrastructure;
-
-public static class DependencyInjection
+namespace CRMF360.Infrastructure
 {
-    public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static class DependencyInjection
     {
-        var connectionString = configuration.GetConnectionString("pg")
-            ?? throw new InvalidOperationException("Connection string 'pg' not found.");
-    Console.WriteLine($"[DEBUG] ConnectionString pg = {connectionString}");
+        public static IServiceCollection AddInfrastructure(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("pg")
+                ?? throw new InvalidOperationException("Connection string 'pg' not found.");
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(connectionString));
 
-        services.AddScoped<IApplicationDbContext>(sp =>
-            sp.GetRequiredService<ApplicationDbContext>());
+            services.AddScoped<IApplicationDbContext>(sp =>
+                sp.GetRequiredService<ApplicationDbContext>());
 
-        services.AddScoped<IUserService, UserService>();
+            // Users
+            services.AddScoped<IUserService, UserService>();
+            // Roles
+            services.AddScoped<IRoleService, RoleService>();
+            // Auth
+            services.AddScoped<IAuthService, AuthService>();
+            //Empresas
+            services.AddScoped<IEmpresaService, EmpresaService>();
+            //PersonaEmpresa
+            services.AddScoped<IPersonaEmpresaService, PersonaEmpresaService>();
+            //Proyectos
+            services.AddScoped<IProyectoService, ProyectoService>();
 
-        return services;
+            return services;
+        }
     }
 }

@@ -4,6 +4,7 @@ using CRMF360.Domain.Entities;
 using CRMF360.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace CRMF360.Infrastructure.Services;
 
 public class ProyectoService : IProyectoService
@@ -29,8 +30,10 @@ public class ProyectoService : IProyectoService
             Descripcion = p.Descripcion,
             FechaInicio = p.FechaInicio,
             FechaFin = p.FechaFin,
-            EstadoId = (int)p.Estado,          // 👈 id del enum
-            EstadoNombre = p.Estado.ToString() // 👈 texto legible
+            EstadoId = (int)p.Estado,
+            EstadoNombre = p.Estado.ToString(),
+            HorasEstimadasTotales = p.HorasEstimadasTotales,
+            HorasEstimadasMensuales = p.HorasEstimadasMensuales
         }).ToList();
     }
 
@@ -48,7 +51,9 @@ public class ProyectoService : IProyectoService
             FechaInicio = p.FechaInicio,
             FechaFin = p.FechaFin,
             EstadoId = (int)p.Estado,
-            EstadoNombre = p.Estado.ToString()
+            EstadoNombre = p.Estado.ToString(),
+            HorasEstimadasTotales = p.HorasEstimadasTotales,
+            HorasEstimadasMensuales = p.HorasEstimadasMensuales
         };
     }
 
@@ -58,7 +63,6 @@ public class ProyectoService : IProyectoService
         if (empresa == null)
             throw new InvalidOperationException($"No existe EmpresaId={request.EmpresaId}");
 
-        // 👇 convertimos EstadoId (int) → enum
         if (!Enum.IsDefined(typeof(EstadoProyecto), request.EstadoId))
             throw new InvalidOperationException($"EstadoId inválido: {request.EstadoId}");
 
@@ -69,7 +73,9 @@ public class ProyectoService : IProyectoService
             Descripcion = request.Descripcion,
             FechaInicio = request.FechaInicio,
             FechaFin = request.FechaFin,
-            Estado = (EstadoProyecto)request.EstadoId
+            Estado = (EstadoProyecto)request.EstadoId,
+            HorasEstimadasTotales = request.HorasEstimadasTotales,
+            HorasEstimadasMensuales = request.HorasEstimadasMensuales
         };
 
         _context.Proyectos.Add(entity);
@@ -84,15 +90,16 @@ public class ProyectoService : IProyectoService
         var p = await _context.Proyectos.FindAsync(id);
         if (p == null) return false;
 
+        if (!Enum.IsDefined(typeof(EstadoProyecto), request.EstadoId))
+            throw new InvalidOperationException($"EstadoId inválido: {request.EstadoId}");
+
         p.Nombre = request.Nombre;
         p.Descripcion = request.Descripcion;
         p.FechaInicio = request.FechaInicio;
         p.FechaFin = request.FechaFin;
-
-        if (!Enum.IsDefined(typeof(EstadoProyecto), request.EstadoId))
-            throw new InvalidOperationException($"EstadoId inválido: {request.EstadoId}");
-
         p.Estado = (EstadoProyecto)request.EstadoId;
+        p.HorasEstimadasTotales = request.HorasEstimadasTotales;
+        p.HorasEstimadasMensuales = request.HorasEstimadasMensuales;
 
         await _context.SaveChangesAsync();
         return true;

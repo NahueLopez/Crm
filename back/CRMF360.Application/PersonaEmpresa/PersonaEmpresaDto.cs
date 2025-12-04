@@ -1,5 +1,5 @@
-﻿namespace CRMF360.Application.PersonaEmpresa
-{
+﻿namespace CRMF360.Application.PersonaEmpresa;
+
     public class PersonaEmpresaDto
     {
         public int Id { get; set; }
@@ -31,4 +31,4 @@
         public bool Principal { get; set; }
         public bool Activa { get; set; }
     }
-}
+

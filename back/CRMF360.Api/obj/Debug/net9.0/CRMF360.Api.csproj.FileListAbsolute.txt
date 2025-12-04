@@ -294,4 +294,3 @@ C:\Users\Nahue\Desktop\Code\Crm-F360\back\CRMF360.Api\obj\Debug\net9.0\refint\CR
 C:\Users\Nahue\Desktop\Code\Crm-F360\back\CRMF360.Api\obj\Debug\net9.0\CRMF360.Api.pdb
 C:\Users\Nahue\Desktop\Code\Crm-F360\back\CRMF360.Api\obj\Debug\net9.0\CRMF360.Api.genruntimeconfig.cache
 C:\Users\Nahue\Desktop\Code\Crm-F360\back\CRMF360.Api\obj\Debug\net9.0\ref\CRMF360.Api.dll
-C:\Users\Nahue\Desktop\Code\Crm-F360\back\CRMF360.Api\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

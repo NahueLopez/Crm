@@ -14,6 +14,9 @@ public class Proyecto
     public DateTime? FechaFin { get; set; }
 
     public EstadoProyecto Estado { get; set; } = EstadoProyecto.Activo;
+
+    public decimal? HorasEstimadasTotales { get; set; }
+    public decimal? HorasEstimadasMensuales { get; set; }
 }
 
 public enum EstadoProyecto

@@ -10,6 +10,7 @@ using CRMF360.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CRMF360.Application.TimeEntries;
 
 namespace CRMF360.Infrastructure
 {
@@ -40,6 +41,8 @@ namespace CRMF360.Infrastructure
             services.AddScoped<IPersonaEmpresaService, PersonaEmpresaService>();
             //Proyectos
             services.AddScoped<IProyectoService, ProyectoService>();
+            // Horas x Proyecto
+            services.AddScoped<ITimeEntryService, TimeEntryService>();
 
             return services;
         }

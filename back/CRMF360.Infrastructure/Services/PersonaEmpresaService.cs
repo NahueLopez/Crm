@@ -1,4 +1,4 @@
-﻿using CRMF360.Application.PersonaEmpresa;
+﻿using CRMF360.Application.PersonasEmpresa;   // 👈 namespace de DTOs + interfaz
 using CRMF360.Domain.Entities;
 using CRMF360.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +8,7 @@ namespace CRMF360.Infrastructure.Services;
 public class PersonaEmpresaService : IPersonaEmpresaService
 {
     private readonly ApplicationDbContext _context;
+    // (ideal a futuro: inyectar IApplicationDbContext en vez de ApplicationDbContext)
 
     public PersonaEmpresaService(ApplicationDbContext context)
     {
@@ -16,7 +17,7 @@ public class PersonaEmpresaService : IPersonaEmpresaService
 
     public async Task<List<PersonaEmpresaDto>> GetByEmpresaAsync(int empresaId)
     {
-        var personas = await _context.PersonasEmpresa
+        var personas = await _context.PersonaEmpresas   // 👈 acá
             .Where(p => p.EmpresaId == empresaId && p.Activa)
             .ToListAsync();
 
@@ -35,7 +36,7 @@ public class PersonaEmpresaService : IPersonaEmpresaService
 
     public async Task<PersonaEmpresaDto?> GetByIdAsync(int id)
     {
-        var p = await _context.PersonasEmpresa.FindAsync(id);
+        var p = await _context.PersonaEmpresas.FindAsync(id);   // 👈 acá
         if (p == null) return null;
 
         return new PersonaEmpresaDto
@@ -68,15 +69,16 @@ public class PersonaEmpresaService : IPersonaEmpresaService
             Activa = true
         };
 
-        _context.PersonasEmpresa.Add(entity);
+        _context.PersonaEmpresas.Add(entity);   // 👈 acá
         await _context.SaveChangesAsync();
 
-        return await GetByIdAsync(entity.Id) ?? throw new InvalidOperationException("Error al crear persona.");
+        return await GetByIdAsync(entity.Id)
+               ?? throw new InvalidOperationException("Error al crear persona.");
     }
 
     public async Task<bool> UpdateAsync(int id, UpdatePersonaEmpresaRequest request)
     {
-        var p = await _context.PersonasEmpresa.FindAsync(id);
+        var p = await _context.PersonaEmpresas.FindAsync(id);   // 👈 acá
         if (p == null) return false;
 
         p.NombreCompleto = request.NombreCompleto;
@@ -92,7 +94,7 @@ public class PersonaEmpresaService : IPersonaEmpresaService
 
     public async Task<bool> SoftDeleteAsync(int id)
     {
-        var p = await _context.PersonasEmpresa.FindAsync(id);
+        var p = await _context.PersonaEmpresas.FindAsync(id);   // 👈 acá
         if (p == null) return false;
 
         p.Activa = false;

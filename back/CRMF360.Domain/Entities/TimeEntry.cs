@@ -7,7 +7,8 @@ public class TimeEntry
     public int ProyectoId { get; set; }
     public Proyecto Proyecto { get; set; } = null!;
 
-    public Guid UsuarioId { get; set; }
+    public int UsuarioId { get; set; }
+    public User Usuario { get; set; } = null!;
 
     public DateTime Fecha { get; set; }
     public decimal Horas { get; set; }

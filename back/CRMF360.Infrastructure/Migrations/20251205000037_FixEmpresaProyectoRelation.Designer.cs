@@ -3,6 +3,7 @@ using System;
 using CRMF360.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CRMF360.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251205000037_FixEmpresaProyectoRelation")]
+    partial class FixEmpresaProyectoRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,19 +198,32 @@ namespace CRMF360.Infrastructure.Migrations
                     b.Property<int>("ProyectoId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProyectoId");
 
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("TimeEntries", (string)null);
                 });
 
-            modelBuilder.Entity("CRMF360.Domain.Entities.User", b =>
+            modelBuilder.Entity("CRMF360.Domain.Entities.UserRole", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -249,21 +265,6 @@ namespace CRMF360.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("CRMF360.Domain.Entities.UserRole", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRoles", (string)null);
-                });
-
             modelBuilder.Entity("CRMF360.Domain.Entities.PersonaEmpresa", b =>
                 {
                     b.HasOne("CRMF360.Domain.Entities.Empresa", "Empresa")
@@ -294,15 +295,7 @@ namespace CRMF360.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CRMF360.Domain.Entities.User", "Usuario")
-                        .WithMany("TimeEntries")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Proyecto");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("CRMF360.Domain.Entities.UserRole", b =>
@@ -313,7 +306,7 @@ namespace CRMF360.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CRMF360.Domain.Entities.User", "User")
+                    b.HasOne("User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,10 +329,8 @@ namespace CRMF360.Infrastructure.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("CRMF360.Domain.Entities.User", b =>
+            modelBuilder.Entity("User", b =>
                 {
-                    b.Navigation("TimeEntries");
-
                     b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618

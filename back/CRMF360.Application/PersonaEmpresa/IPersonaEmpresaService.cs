@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using CRMF360.Application.PersonasEmpresa;
 
-namespace CRMF360.Application.PersonaEmpresa;
+namespace CRMF360.Application.PersonasEmpresa;
 
 public interface IPersonaEmpresaService
 {

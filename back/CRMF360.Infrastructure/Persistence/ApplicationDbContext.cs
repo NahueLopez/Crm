@@ -15,7 +15,7 @@ namespace CRMF360.Infrastructure.Persistence
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<UserRole> UserRoles => Set<UserRole>();
         public DbSet<Empresa> Empresas => Set<Empresa>();
-        public DbSet<PersonaEmpresa> PersonasEmpresa => Set<PersonaEmpresa>();
+        public DbSet<PersonaEmpresa> PersonaEmpresas => Set<PersonaEmpresa>(); 
         public DbSet<Proyecto> Proyectos => Set<Proyecto>();
         public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
 
@@ -118,11 +118,12 @@ namespace CRMF360.Infrastructure.Persistence
                     .HasMaxLength(100);
 
                 entity.HasOne(p => p.Empresa)
-                    .WithMany(e => e.Personas) // si tenés ICollection<PersonaEmpresa> en Empresa
+                    .WithMany(e => e.Personas)
                     .HasForeignKey(p => p.EmpresaId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // Proyecto
             // Proyecto
             modelBuilder.Entity<Proyecto>(entity =>
             {
@@ -147,10 +148,11 @@ namespace CRMF360.Infrastructure.Persistence
                     .HasConversion<int>();
 
                 entity.HasOne(p => p.Empresa)
-                    .WithMany()               // si después le agregás ICollection<Proyecto> a Empresa, podés poner .WithMany(e => e.Proyectos)
+                    .WithMany(e => e.Proyectos)      // 👈 ahora sí usa la colección de Empresa
                     .HasForeignKey(p => p.EmpresaId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
 
             // TimeEntry (horas por proyecto)
             modelBuilder.Entity<TimeEntry>(entity =>
@@ -165,9 +167,14 @@ namespace CRMF360.Infrastructure.Persistence
                     .HasMaxLength(1000);
 
                 entity.HasOne(t => t.Proyecto)
-                    .WithMany()               // si querés, más adelante podés agregar ICollection<TimeEntry> en Proyecto
+                    .WithMany() 
                     .HasForeignKey(t => t.ProyectoId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(t => t.Usuario)          
+                    .WithMany(u => u.TimeEntries)      
+                    .HasForeignKey(t => t.UsuarioId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

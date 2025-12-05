@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CRMF360.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0028ba624fec3bd764e21b3857f9cf269ef61c01")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b4e87b3fa2819461de47fee5d82651e9ceb5d4b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CRMF360.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CRMF360.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

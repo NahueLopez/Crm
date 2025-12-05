@@ -9,7 +9,7 @@ namespace CRMF360.Application.Abstractions
         DbSet<Role> Roles { get; }
         DbSet<UserRole> UserRoles { get; }
         DbSet<Empresa> Empresas { get; }
-        DbSet<PersonaEmpresa> PersonaEmpresas { get; }
+        DbSet<PersonaEmpresa> PersonaEmpresas { get; } 
         DbSet<Proyecto> Proyectos { get; }
         DbSet<TimeEntry> TimeEntries { get; }
 

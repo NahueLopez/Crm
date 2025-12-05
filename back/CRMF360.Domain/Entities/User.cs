@@ -1,4 +1,4 @@
-﻿using CRMF360.Domain.Entities;
+﻿namespace CRMF360.Domain.Entities;
 
 public class User
 {
@@ -12,4 +12,5 @@ public class User
     public DateTime? LastLoginAt { get; set; }
 
     public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+    public ICollection<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();
 }

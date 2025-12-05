@@ -1,8 +1,6 @@
-﻿using CRMF360.Domain.Entities;
-using CRMF360.Infrastructure.Persistence;
+﻿using CRMF360.Application.PersonasEmpresa;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRMF360.Api.Controllers;
 
@@ -11,89 +9,51 @@ namespace CRMF360.Api.Controllers;
 [Authorize]
 public class PersonasEmpresaController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IPersonaEmpresaService _service;
 
-    public PersonasEmpresaController(ApplicationDbContext context)
+    public PersonasEmpresaController(IPersonaEmpresaService service)
     {
-        _context = context;
+        _service = service;
     }
 
-    // GET: api/PersonasEmpresa/by-empresa/3
     [HttpGet("by-empresa/{empresaId:int}")]
-    public async Task<ActionResult<IEnumerable<PersonaEmpresa>>> GetByEmpresa(int empresaId)
+    public async Task<ActionResult<IEnumerable<PersonaEmpresaDto>>> GetByEmpresa(int empresaId)
     {
-        var personas = await _context.PersonasEmpresa
-            .Where(p => p.EmpresaId == empresaId && p.Activa)
-            .ToListAsync();
-
+        var personas = await _service.GetByEmpresaAsync(empresaId);
         return Ok(personas);
     }
 
-    // GET: api/PersonasEmpresa/5
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<PersonaEmpresa>> GetPersona(int id)
+    public async Task<ActionResult<PersonaEmpresaDto>> GetPersona(int id)
     {
-        var persona = await _context.PersonasEmpresa.FindAsync(id);
-        if (persona == null)
-            return NotFound();
-
+        var persona = await _service.GetByIdAsync(id);
+        if (persona == null) return NotFound();
         return Ok(persona);
     }
 
-    // POST: api/PersonasEmpresa
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<PersonaEmpresa>> CrearPersona([FromBody] PersonaEmpresa persona)
+    public async Task<ActionResult<PersonaEmpresaDto>> CrearPersona([FromBody] CreatePersonaEmpresaRequest request)
     {
-        // Validamos que la empresa exista
-        var empresa = await _context.Empresas.FindAsync(persona.EmpresaId);
-        if (empresa == null)
-            return BadRequest($"No existe la EmpresaId={persona.EmpresaId}");
-
-        persona.Id = 0;
-        persona.Activa = true;
-
-        _context.PersonasEmpresa.Add(persona);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetPersona), new { id = persona.Id }, persona);
+        var result = await _service.CreateAsync(request);
+        return CreatedAtAction(nameof(GetPersona), new { id = result.Id }, result);
     }
 
-    // PUT: api/PersonasEmpresa/5
     [HttpPut("{id:int}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> ActualizarPersona(int id, [FromBody] PersonaEmpresa persona)
+    public async Task<IActionResult> ActualizarPersona(int id, [FromBody] UpdatePersonaEmpresaRequest request)
     {
-        if (id != persona.Id)
-            return BadRequest("Id de URL y cuerpo no coinciden.");
-
-        var existing = await _context.PersonasEmpresa.FindAsync(id);
-        if (existing == null)
-            return NotFound();
-
-        existing.NombreCompleto = persona.NombreCompleto;
-        existing.RolEnEmpresa = persona.RolEnEmpresa;
-        existing.Email = persona.Email;
-        existing.Telefono = persona.Telefono;
-        existing.Principal = persona.Principal;
-        existing.Activa = persona.Activa;
-
-        await _context.SaveChangesAsync();
+        var ok = await _service.UpdateAsync(id, request);
+        if (!ok) return NotFound();
         return NoContent();
     }
 
-    // DELETE lógico: api/PersonasEmpresa/5
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> BorrarPersona(int id)
     {
-        var persona = await _context.PersonasEmpresa.FindAsync(id);
-        if (persona == null)
-            return NotFound();
-
-        persona.Activa = false;
-        await _context.SaveChangesAsync();
-
+        var ok = await _service.SoftDeleteAsync(id);
+        if (!ok) return NotFound();
         return NoContent();
     }
 }

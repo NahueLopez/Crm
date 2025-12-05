@@ -25,12 +25,13 @@ public class TimeEntriesController : ControllerBase
     }
 
     // GET api/timeentries/by-usuario/{usuarioId}
-    [HttpGet("by-usuario/{usuarioId:guid}")]
-    public async Task<ActionResult<IEnumerable<TimeEntryDto>>> GetByUsuario(Guid usuarioId)
+    [HttpGet("by-usuario/{usuarioId:int}")]
+    public async Task<ActionResult<IEnumerable<TimeEntryDto>>> GetByUsuario(int usuarioId)
     {
         var horas = await _service.GetByUsuarioAsync(usuarioId);
         return Ok(horas);
     }
+
 
     // POST api/timeentries
     [HttpPost]

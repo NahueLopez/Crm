@@ -1,7 +1,7 @@
 ﻿using CRMF360.Application.Abstractions;
 using CRMF360.Application.Auth;
 using CRMF360.Application.Empresas;
-using CRMF360.Application.PersonaEmpresa;
+using CRMF360.Application.PersonasEmpresa;
 using CRMF360.Application.Proyectos;
 using CRMF360.Application.Roles;
 using CRMF360.Application.Users;

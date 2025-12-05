@@ -23,10 +23,10 @@ public class TimeEntryService : ITimeEntryService
         return query.Select(MapToDto).ToList();
     }
 
-    public async Task<List<TimeEntryDto>> GetByUsuarioAsync(Guid usuarioId)
+    public async Task<List<TimeEntryDto>> GetByUsuarioAsync(int usuarioId)   // 👈 Guid → int
     {
         var query = await _context.TimeEntries
-            .Where(t => t.UsuarioId == usuarioId)
+            .Where(t => t.UsuarioId == usuarioId)   // 👈 ahora int == int ✔
             .ToListAsync();
 
         return query.Select(MapToDto).ToList();
@@ -37,7 +37,7 @@ public class TimeEntryService : ITimeEntryService
         var entity = new TimeEntry
         {
             ProyectoId = request.ProyectoId,
-            UsuarioId = request.UsuarioId,
+            UsuarioId = request.UsuarioId,   // 👈 asegurate que sea int en el DTO
             Fecha = request.Fecha,
             Horas = request.Horas,
             Descripcion = request.Descripcion
@@ -63,7 +63,7 @@ public class TimeEntryService : ITimeEntryService
     {
         Id = t.Id,
         ProyectoId = t.ProyectoId,
-        UsuarioId = t.UsuarioId,
+        UsuarioId = t.UsuarioId,   // 👈 int
         Fecha = t.Fecha,
         Horas = t.Horas,
         Descripcion = t.Descripcion

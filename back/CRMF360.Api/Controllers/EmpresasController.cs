@@ -8,7 +8,7 @@ namespace CRMF360.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] // si querés que TODO requiera login
+[Authorize] 
 public class EmpresasController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
